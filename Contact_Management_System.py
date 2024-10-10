@@ -2,91 +2,79 @@ import re
 
 def add_contact(contacts):
     try:
-        email_address = input("Enter the contact's email address: ")
-        #add \n
+        email_address = input("\nEnter the new contact's email address: ")
         name = input("Enter the new contact's name: ")
-        phone_number = input("Enter the contact's phone number (eg. 123-456-7890): ")
-        address = input("Enter the contact's address: ")
+        phone_number = input("Enter the new contact's phone number (eg. 123-456-7890): ")
+        address = input("Enter the new contact's address: ")
         if validate_email(email_address):
             if email_address not in contacts:
                 contacts[email_address] = {"Name" : name, "Phone Number" : phone_number, "Address" : address}
                 print(f"\n{name} has been added to contacts under e-mail address '{email_address}'.")
-                # print(contacts)
             else:
-                print(f"{name} already exists.")
+                print(f"\n{name} already exists.")
         else:
-            print("Invalid email address for new contact. Please try again.")
+            print("\nInvalid email address for new contact. Please try again.")
     except Exception as e:
-        print(f"Unexpected error occured: {e}")
+        print(f"\nUnexpected error occured: {e}")
 
 def edit_contact(contacts):
     try:
-        email_address = input("Enter the contact's e-mail address to edit: ")
-        #add \n
+        email_address = input("\nEnter the contact's e-mail address to edit: ")
         if email_address in contacts:
-            detail_to_edit = input("Enter the detail you'd like to edit (Name, Phone Number, Address): ")
-            if detail_to_edit == "Name":
-                #think .lower() would make this case insensitive
+            detail_to_edit = input("Enter the detail you'd like to edit (Email Address, Name, Phone Number, Address): ")
+            if detail_to_edit.lower() == "Email Address":
+                new_email = input("Enter the contact's new email address: ")
+                if validate_email(new_email):
+                    contacts[email_address] = new_email
+                    print(f"\n'{new_name}' has been set as the contact name for {email_address}.")
+            elif detail_to_edit.lower() == "Name":
                 new_name = input("Enter the contact's new name: ")
                 contacts[email_address]["Name"] = new_name
-                print(f"'{new_name}' has been set as the contact name for {email_address}.")
-            elif detail_to_edit == "Phone Number":
+                print(f"\n'{new_name}' has been set as the contact name for {email_address}.")
+            elif detail_to_edit.lower() == "Phone Number":
                 new_phone_number = input("Enter the contact's new phone number: ")
                 contacts[email_address]["Phone Number"] = new_phone_number
-                print(f"'{new_phone_number}' has been set as the contact phone number for {email_address}.")
-            elif detail_to_edit == "Address":
+                print(f"\n'{new_phone_number}' has been set as the contact phone number for {email_address}.")
+            elif detail_to_edit.lower() == "Address":
                 new_address = input("Enter the contact's new address: ")
                 contacts[email_address]["Address"] = new_address
-                print(f"'{new_address}' has been set as the contact address for {email_address}.")
-
-
-            # if re.match(detail_to_edit, contacts[email_address], re.IGNORECASE):
-            #     #I think this might pull too deeply into the dictionary.
-            #     new_name = input("Enter the contact's new name: ")
-            #     contacts[email_address]["Name"] = new_name
-            #     print(f"'{new_name}' has been set as the contact name for {email_address}.")
-            # elif re.match(detail_to_edit, contacts[email_address], re.IGNORECASE):
-            #     new_phone_number = input("Enter the contact's new phone number: ")
-            #     contacts[email_address]["Phone Number"] = new_phone_number
-            #     print(f"'{new_phone_number}' has been set as the contact phone number for {email_address}.")
-            # elif re.match(detail_to_edit, contacts[email_address], re.IGNORECASE):
-            #     new_address = input("Enter the contact's new address: ")
-            #     contacts[email_address]["Address"] = new_address
-            #     print(f"'{new_address}' has been set as the contact address for {email_address}.")
+                print(f"\n'{new_address}' has been set as the contact address for {email_address}.")
             else:
-                print("Invalid input.")
+                print("\nInvalid input.")
         else:
-            print(f"'{email_address}' not found in contacts.")
+            print(f"\n'{email_address}' not found in contacts.")
     except Exception as e:
-        print(f"Unexpected error occured: {e}")
+        print(f"\nUnexpected error occured: {e}")
 
 def delete_contact(contacts):
     try:
-        email_address = input("Enter the contact's e-mail address to delete: ")
+        email_address = input("\nEnter the contact's e-mail address to delete: ")
         if email_address in contacts:
             del contacts[email_address]
-            print(f"Contact info for '{email_address}' has been deleted.")
+            print(f"\nContact info for '{email_address}' has been deleted.")
         else:
-            print("Contact not found.")
+            print("\nContact not found.")
     except Exception as e:
-        print(f"Unexpected error occured: {e}")
+        print(f"\nUnexpected error occured: {e}")
 
 def search_contacts(contacts):
-    email_address = input("Enter the email address to search: ")
-    if email_address in contacts:
-        for email_address, details in contacts.items():
-            print(f"Email Address: {email_address}\n    -Name: {details["Name"]}\n    -Phone Number: {details["Phone Number"]}\n    -Address: {details["Address"]}")
-            break
-    else:
-        print("E-mail address not found.")
-
+    try:
+        email_address = input("\nEnter the email address to search: ")
+        if email_address in contacts:
+            for email_address, details in contacts.items():
+                print(f"\nEmail Address: {email_address}\n    -Name: {details["Name"]}\n    -Phone Number: {details["Phone Number"]}\n    -Address: {details["Address"]}")
+                break
+        else:
+            print("\nE-mail address not found.")
+    except Exception as e:
+        print(f"\nUnexpected error occured: {e}")
 
 def display_contacts(contacts):
     try:
         for email_address, details in contacts.items():
-            print(f"Email Address: {email_address}\n    -Name: {details["Name"]}\n    -Phone Number: {details["Phone Number"]}\n    -Address: {details["Address"]}")
+            print(f"\nEmail Address: {email_address}\n    -Name: {details["Name"]}\n    -Phone Number: {details["Phone Number"]}\n    -Address: {details["Address"]}")
     except:
-        print("Contact list is empty.")
+        print("\nContact list is empty.")
 
 def export_contacts(contacts):
     with open('my_email_contacts.txt','w') as file:
